@@ -1,4 +1,4 @@
-// cat program
+// TODO: cat program alternative with syntax highlighting
 // By Airbus5717 2021 (C)
 // MIT License
 
