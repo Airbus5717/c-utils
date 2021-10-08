@@ -3,8 +3,8 @@
 // MIT License
 
 #include "include/main.h"
-#include "include/lexer.h"
 #include "include/export.h"
+#include "include/lexer.h"
 
 int main(int argc, char **argv)
 {
@@ -64,8 +64,8 @@ int main(int argc, char **argv)
     // dump string output
     dump_colored_output(&lexer);
     // free and close
-    tokens_free(lexer.output);
-    free(str);
+    lexer_destroy(&lexer);
+    free(lexer.input);
     fclose(file);
     return exit;
 }

@@ -1,2 +1,1 @@
 asm auto break case const continue default define do else enum extern for goto if include register return sizeof static struct switch typedef union volatile while
-double int long char short signed float bool true false void unsigned

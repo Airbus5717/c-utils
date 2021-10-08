@@ -1,6 +1,5 @@
 #include "include/lexer.h"
 #include "include/utils.h"
-#include <stdlib.h>
 
 void lexer_init(lexer_t *lexer, char *str, size_t len)
 {
@@ -8,10 +7,47 @@ void lexer_init(lexer_t *lexer, char *str, size_t len)
     lexer->file_len = len;
     lexer->input = str;
     lexer->output = new_vec(token_t);
+    lexer->keywords = new_vec(string_t);
+    lexer->types = new_vec(string_t);
+}
+
+void lexer_get_words(lexer_t *lexer)
+{
+    char this_word[50];
+    lexer->file_ext = "c";
+    char *f_name = concat_str("./syntax/", lexer->file_ext);
+    char *f_name2 = concat_str(f_name, "/keywords");
+    char *f_name3 = concat_str(f_name, "/types");
+    FILE *keyfile = fopen(f_name2, "r");
+    FILE *typefile = fopen(f_name3, "r");
+    if (!keyfile && !typefile)
+    {
+        free(f_name);
+        free(f_name2);
+        free(f_name3);
+        return;
+    }
+    while (fscanf(keyfile, "%49s", this_word) == 1)
+    {
+        size_t len = strlen(this_word);
+        push_string_vec(lexer->keywords, this_word, len);
+    }
+
+    while (fscanf(typefile, "%49s", this_word) == 1)
+    {
+        size_t len = strlen(this_word);
+        push_string_vec(lexer->types, this_word, len);
+    }
+
+    fclose(keyfile);
+    fclose(typefile);
+    free(f_name);
+    free(f_name2);
 }
 
 size_t lexer_lex(lexer_t *lexer)
 {
+    // lexer_get_words(lexer);
     for (lexer->index = 0; lexer->index < lexer->file_len; next())
     {
         if (lexer_single(lexer) == EXIT_FAILURE) return EXIT_FAILURE;
@@ -121,7 +157,7 @@ size_t lexer_single(lexer_t *lexer)
 
 size_t lexer_multichar(lexer_t *lexer)
 {
-    size_t save_index = lexer->index ;
+    size_t save_index = lexer->index;
     next();
 
     length() = 1;
@@ -132,12 +168,20 @@ size_t lexer_multichar(lexer_t *lexer)
     }
     token_type_t tkn_type = ID;
     lexer->index = save_index;
+
     lexer_tkn(lexer, tkn_type);
     return EXIT_SUCCESS;
 }
 
 void lexer_destroy(lexer_t *lexer)
 {
-    free_vec(lexer->output);
+    for_each(lexer->output, tkn_t)
+    {
+        free(tkn_t->val);
+    }
+    free_string_vec(lexer->keywords);
+    free_string_vec(lexer->types);
     lexer->output = NULL;
+    lexer->keywords = NULL;
+    lexer->types = NULL;
 }

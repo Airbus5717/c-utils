@@ -17,7 +17,7 @@ void dump_colored_output(lexer_t *lexer)
         switch (tkn_t->type)
         {
             case KEYWORD:
-                print_color(LGREEN, tkn_t->val, true);
+                print_color(LYELLOW, tkn_t->val, true);
                 break;
             case TYPE:
                 print_color(LBLUE, tkn_t->val, false);

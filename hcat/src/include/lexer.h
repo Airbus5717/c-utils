@@ -2,13 +2,18 @@
 #define LEXER_H
 
 #include "common.h"
+#include "lib5717.h"
 #include "token.h"
+#include "utils.h"
 #include "vector.h"
 
 typedef struct
 {
     char *input;
+    char *file_ext;
     vec(token_t) output;
+    vec(string_t) keywords;
+    vec(string_t) types;
     size_t file_len;
     size_t index;
     size_t length;

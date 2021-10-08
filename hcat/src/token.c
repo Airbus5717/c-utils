@@ -18,6 +18,8 @@ const char *describe_token_type(const token_type_t tkn)
             return "CHAR";
         case SPACE:
             return "SPACE";
+        case COMMENT:
+            return "COMMENT";
         case OTHER:
             return "OTHER";
         default:
