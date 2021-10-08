@@ -1,9 +1,10 @@
-// TODO: cat program alternative with syntax highlighting
+// cat program alternative with syntax highlighting
 // By Airbus5717 2021 (C)
 // MIT License
 
-#include <stdio.h>
-#include <stdlib.h>
+#include "include/main.h"
+#include "include/lexer.h"
+#include "include/export.h"
 
 int main(int argc, char **argv)
 {
@@ -18,18 +19,18 @@ int main(int argc, char **argv)
     FILE *file = fopen(argv[1], "rb");
     if (!file)
     {
-        printf("err\n");
+        printf("No such file or directory\n");
         return 1;
     }
 
     // seek to end of file for calculating length
     fseek(file, 0, SEEK_END);
-    if (!ftell(file))
-    {
-        printf("err length\n");
-        fclose(file);
-        return 1;
-    }
+    // if (!ftell(file))
+    // {
+    //     printf("File is empty\n");
+    //     fclose(file);
+    //     return 1;
+    // }
 
     // get length
     const size_t length = ftell(file);
@@ -38,6 +39,13 @@ int main(int argc, char **argv)
 
     // allocate memory for file
     char *str = malloc(length + 1);
+    if (!str)
+    {
+        printf("allocation failure\n");
+        fclose(file);
+        return 1;
+    }
+
     // put file in memory
     if (fread(str, sizeof(char), length, file) != length)
     {
@@ -48,12 +56,16 @@ int main(int argc, char **argv)
     }
     // add null-terminating char
     str[length] = '\0';
+    lexer_t lexer;
+    lexer_init(&lexer, str, length);
+    int exit;
+    exit = lexer_lex(&lexer);
 
     // dump string output
-    printf("%s\n", str);
-
+    dump_colored_output(&lexer);
     // free and close
+    tokens_free(lexer.output);
     free(str);
     fclose(file);
-    return 0;
+    return exit;
 }

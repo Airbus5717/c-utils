@@ -38,6 +38,12 @@ int main(int argc, char **argv)
 
     // allocate memory for file
     char *str = malloc(length + 1);
+    if (!str)
+    {
+        printf("memory allocation failure\n");
+        fclose(file);
+        return 1;
+    }
     // put file in memory
     if (fread(str, sizeof(char), length, file) != length)
     {
