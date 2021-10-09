@@ -226,8 +226,9 @@ void lexer_destroy(lexer_t *lexer)
     // free_string_vec(lexer->keywords);
     // free_string_vec(lexer->types);
     free(lexer->input);
+    lexer->input = NULL;
+    free(lexer->output);
     lexer->output = NULL;
     lexer->keywords = NULL;
     lexer->types = NULL;
-    lexer->input = NULL;
 }
