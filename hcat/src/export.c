@@ -16,13 +16,19 @@ void dump_colored_output(lexer_t *lexer)
         // printf("token: (%s) with text \"%s\"\n", describe_token_type(tkn_t->type), tkn_t->val);
         switch (tkn_t->type)
         {
+            // case ID:
+            //     print_color(LCYAN, tkn_t->val, false);
+            //     break;
             case KEYWORD:
-                print_color(LYELLOW, tkn_t->val, true);
+                print_color(YELLOW, tkn_t->val, false);
                 break;
             case TYPE:
-                print_color(LBLUE, tkn_t->val, false);
+                print_color(LGREEN, tkn_t->val, false);
                 break;
             case STRING:
+                print_color(LMAGENTA, tkn_t->val, false);
+                break;
+            case CHAR:
                 print_color(LCYAN, tkn_t->val, false);
                 break;
             case COMMENT:

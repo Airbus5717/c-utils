@@ -1,7 +1,8 @@
 #include <stdio.h>
-
-int main (void) {
-	// comment test
-	printf("Hello World"); 
-	return 0;
+// comment test
+int main(void)
+{
+    char x = 's';
+    printf("Hello World");
+    return 0;
 }

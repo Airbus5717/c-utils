@@ -5,6 +5,7 @@
 #include "include/main.h"
 #include "include/export.h"
 #include "include/lexer.h"
+#include <stddef.h>
 
 int main(int argc, char **argv)
 {
@@ -14,12 +15,14 @@ int main(int argc, char **argv)
         printf("cat [filename]\n");
         return 0;
     }
-
+    size_t i, j;
+    for (i = 0; argv[1][i] != '\0'; i++)
+        if (argv[1][i] == '.') j = i;
     // open file
     FILE *file = fopen(argv[1], "rb");
     if (!file)
     {
-        printf("No such file or directory\n");
+        printf("No such file or directory. [%s]\n", argv[1]);
         return 1;
     }
 
@@ -56,10 +59,11 @@ int main(int argc, char **argv)
     }
     // add null-terminating char
     str[length] = '\0';
+
     lexer_t lexer;
     lexer_init(&lexer, str, length);
-    int exit;
-    exit = lexer_lex(&lexer);
+    lexer.file_ext = &argv[1][j + 1];
+    int exit = lexer_lex(&lexer);
 
     // dump string output
     dump_colored_output(&lexer);

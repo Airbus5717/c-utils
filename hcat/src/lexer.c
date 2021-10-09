@@ -1,4 +1,4 @@
-#include "include/lexer.h"
+#include "include/languages.h"
 #include "include/token.h"
 #include "include/utils.h"
 #include "include/vector.h"
@@ -9,45 +9,45 @@ void lexer_init(lexer_t *lexer, char *str, size_t len)
     lexer->file_len = len;
     lexer->input = str;
     lexer->output = new_vec(token_t);
-    lexer->keywords = new_vec(string_t);
-    lexer->types = new_vec(string_t);
+    // lexer->keywords = new_vec(string_t);
+    // lexer->types = new_vec(string_t);
 }
 
-void lexer_get_words(lexer_t *lexer)
-{
-    char this_word[50];
-    lexer->file_ext = "c";
-    char *f_name = concat_str("./syntax/", lexer->file_ext);
-    char *f_name2 = concat_str(f_name, "/keywords");
-    char *f_name3 = concat_str(f_name, "/types");
-    FILE *keyfile = fopen(f_name2, "r");
-    FILE *typefile = fopen(f_name3, "r");
-    if (!keyfile && !typefile)
-    {
-        free(f_name);
-        free(f_name2);
-        free(f_name3);
-        return;
-    }
-    while (fscanf(keyfile, "%49s", this_word) == 1)
-    {
-        size_t len = strlen(this_word);
-        const string_t str = (string_t){utils_strndup(this_word, len), len};
-        vec_push(lexer->keywords, str);
-    }
+// void lexer_get_words(lexer_t *lexer)
+// {
+//     char this_word[50];
+//     lexer->file_ext = "c";
+//     char *f_name = concat_str("./syntax/", lexer->file_ext);
+//     char *f_name2 = concat_str(f_name, "/keywords");
+//     char *f_name3 = concat_str(f_name, "/types");
+//     FILE *keyfile = fopen(f_name2, "r");
+//     FILE *typefile = fopen(f_name3, "r");
+//     if (!keyfile && !typefile)
+//     {
+//         free(f_name);
+//         free(f_name2);
+//         free(f_name3);
+//         return;
+//     }
+//     while (fscanf(keyfile, "%49s", this_word) == 1)
+//     {
+//         size_t len = strlen(this_word);
+//         const string_t str = (string_t){utils_strndup(this_word, len), len};
+//         vec_push(lexer->keywords, str);
+//     }
 
-    while (fscanf(typefile, "%49s", this_word) == 1)
-    {
-        size_t len = strlen(this_word);
-        const string_t str = (string_t){utils_strndup(this_word, len), len};
-        vec_push(lexer->types, str);
-    }
+//     while (fscanf(typefile, "%49s", this_word) == 1)
+//     {
+//         size_t len = strlen(this_word);
+//         const string_t str = (string_t){utils_strndup(this_word, len), len};
+//         vec_push(lexer->types, str);
+//     }
 
-    fclose(keyfile);
-    fclose(typefile);
-    free(f_name);
-    free(f_name2);
-}
+//     fclose(keyfile);
+//     fclose(typefile);
+//     free(f_name);
+//     free(f_name2);
+// }
 
 size_t lexer_lex(lexer_t *lexer)
 {
@@ -197,7 +197,22 @@ size_t lexer_multichar(lexer_t *lexer)
     }
     token_type_t tkn_type = ID;
     lexer->index = save_index;
-
+    if (lexer->file_ext)
+    {
+        switch (strlen(lexer->file_ext))
+        {
+            case 1:
+                if (strcmp(lexer->file_ext, "c") == 0)
+                    tkn_type = get_token_type_multichar(lexer, C);
+                break;
+            case 2:
+                if (strcmp(lexer->file_ext, "py") == 0)
+                    tkn_type = get_token_type_multichar(lexer, PYTHON);
+                break;
+            default:
+                break;
+        }
+    }
     lexer_tkn(lexer, tkn_type);
     return EXIT_SUCCESS;
 }
@@ -208,8 +223,8 @@ void lexer_destroy(lexer_t *lexer)
     {
         free(tkn_t->val);
     }
-    free_string_vec(lexer->keywords);
-    free_string_vec(lexer->types);
+    // free_string_vec(lexer->keywords);
+    // free_string_vec(lexer->types);
     free(lexer->input);
     lexer->output = NULL;
     lexer->keywords = NULL;

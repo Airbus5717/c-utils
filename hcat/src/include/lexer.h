@@ -34,6 +34,6 @@ size_t lexer_lex(lexer_t *lexer);
 #define length() (lexer->length)
 #define next() (lexer->index++)
 #define rewind_macro(n) (lexer->index -= (n))
-#define keyword_match(str) (strcmp(lexer->input + lexer->index, str, length) == 0)
+#define keyword_match(str) strncmp(lexer->input + lexer->index, str, length()) == 0
 
 #endif /* LEXER_H */

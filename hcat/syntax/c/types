@@ -1,1 +1,5 @@
-double int long char short signed float bool true false void unsigned size_t
+ int long char float double
+bool void short
+true false signed size_t
+
+unsigned
