@@ -1,7 +1,6 @@
 #include "include/export.h"
 #include "include/token.h"
 #include "include/vector.h"
-#include <stddef.h>
 
 void print_color(const char *color, const char *val, bool bold)
 {
@@ -51,7 +50,7 @@ void dump_colored_output(lexer_t *lexer)
             case NEWLINE: {
                 if (j >= len - 1)
                 {
-                    printf("\n");   
+                    printf("\n");
                     return;
                 }
                 print_newline(i);

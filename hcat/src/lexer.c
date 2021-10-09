@@ -2,7 +2,6 @@
 #include "include/token.h"
 #include "include/utils.h"
 #include "include/vector.h"
-#include <ctype.h>
 
 void lexer_init(lexer_t *lexer, char *str, size_t len)
 {
