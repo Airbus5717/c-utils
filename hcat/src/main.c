@@ -15,7 +15,7 @@ int main(int argc, char **argv)
         printf("cat [filename]\n");
         return 0;
     }
-    size_t i, j;
+    size_t i, j = 0;
     for (i = 0; argv[1][i] != '\0'; i++)
         if (argv[1][i] == '.') j = i;
     // open file
@@ -62,7 +62,7 @@ int main(int argc, char **argv)
 
     lexer_t lexer;
     lexer_init(&lexer, str, length);
-    lexer.file_ext = &argv[1][j + 1];
+    lexer.file_ext = j == 0 ? NULL : &argv[1][j + 1];
     int exit = lexer_lex(&lexer);
 
     // dump string output
