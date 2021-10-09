@@ -84,6 +84,8 @@ token_type_t clang(lexer_t *lexer)
                 return KEYWORD;
             else if (keyword_match("extern"))
                 return KEYWORD;
+            else if (keyword_match("define"))
+                return KEYWORD;
             // types
             else if (keyword_match("signed"))
                 return TYPE;

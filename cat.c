@@ -24,12 +24,6 @@ int main(int argc, char **argv)
 
     // seek to end of file for calculating length
     fseek(file, 0, SEEK_END);
-    if (!ftell(file))
-    {
-        printf("err length\n");
-        fclose(file);
-        return 1;
-    }
 
     // get length
     const size_t length = ftell(file);
@@ -54,9 +48,9 @@ int main(int argc, char **argv)
     }
     // add null-terminating char
     str[length] = '\0';
-
+    fprintf(stdout, "%s\n", str);
     // dump string output
-    printf("%s\n", str);
+    // printf("%s\n", str);
 
     // free and close
     free(str);
