@@ -1,5 +1,7 @@
 #include "include/lexer.h"
+#include "include/token.h"
 #include "include/utils.h"
+#include "include/vector.h"
 
 void lexer_init(lexer_t *lexer, char *str, size_t len)
 {
@@ -30,13 +32,15 @@ void lexer_get_words(lexer_t *lexer)
     while (fscanf(keyfile, "%49s", this_word) == 1)
     {
         size_t len = strlen(this_word);
-        push_string_vec(lexer->keywords, this_word, len);
+        const string_t str = (string_t){utils_strndup(this_word, len), len};
+        vec_push(lexer->keywords, str);
     }
 
     while (fscanf(typefile, "%49s", this_word) == 1)
     {
         size_t len = strlen(this_word);
-        push_string_vec(lexer->types, this_word, len);
+        const string_t str = (string_t){utils_strndup(this_word, len), len};
+        vec_push(lexer->types, str);
     }
 
     fclose(keyfile);
@@ -57,8 +61,8 @@ size_t lexer_lex(lexer_t *lexer)
 
 void lexer_tkn(lexer_t *lexer, token_type_t type)
 {
-    const token_t tkn = {utils_strndup(lexer->input + lexer->index, length()), type};
-    lexer->index += lexer->length - 1;
+    const token_t tkn = (token_t){utils_strndup(lexer->input + lexer->index, length()), type};
+    lexer->index += (lexer->length) - 1;
     vec_push(lexer->output, tkn);
 }
 
@@ -70,6 +74,31 @@ size_t lexer_single(lexer_t *lexer)
     if (isspace(c))
     {
         lexer_tkn(lexer, SPACE);
+        return EXIT_SUCCESS;
+    }
+    else if (c == '/' && peek() == '/')
+    {
+        while (current() != '\n' && !is_eof())
+        {
+            next();
+            add_len();
+        }
+        length() -= 1;
+        lexer->index = save_index;
+        lexer_tkn(lexer, COMMENT);
+        return EXIT_SUCCESS;
+    }
+    else if (c == '/' && peek() == '*')
+    {
+        bool end_comment = false;
+        while (!is_eof() && current() != '\0' && !end_comment)
+        {
+            if ((past() == '*' && current() == '/')) end_comment = true;
+            next();
+            add_len();
+        }
+        lexer->index = save_index;
+        lexer_tkn(lexer, COMMENT);
         return EXIT_SUCCESS;
     }
     else if (isdigit(c))
@@ -181,7 +210,9 @@ void lexer_destroy(lexer_t *lexer)
     }
     free_string_vec(lexer->keywords);
     free_string_vec(lexer->types);
+    free(lexer->input);
     lexer->output = NULL;
     lexer->keywords = NULL;
     lexer->types = NULL;
+    lexer->input = NULL;
 }

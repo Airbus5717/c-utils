@@ -12,7 +12,7 @@ char *utils_strndup(char *start, const size_t length)
 
 void push_string_vec(vec(string_t) str_vec, char *str, const size_t length)
 {
-    const string_t str1 = {utils_strndup(str, length), length};
+    const string_t str1 = (string_t){utils_strndup(str, length), length};
     vec_push(str_vec, str1);
 }
 

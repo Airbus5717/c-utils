@@ -25,6 +25,9 @@ void dump_colored_output(lexer_t *lexer)
             case STRING:
                 print_color(LCYAN, tkn_t->val, false);
                 break;
+            case COMMENT:
+                print_color(LGRAY, tkn_t->val, true);
+                break;
             case NUMBER:
                 print_color(LRED, tkn_t->val, false);
                 break;

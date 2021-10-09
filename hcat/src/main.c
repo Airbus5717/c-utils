@@ -65,7 +65,6 @@ int main(int argc, char **argv)
     dump_colored_output(&lexer);
     // free and close
     lexer_destroy(&lexer);
-    free(lexer.input);
     fclose(file);
     return exit;
 }
