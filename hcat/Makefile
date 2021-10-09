@@ -1,4 +1,4 @@
-.PHONY: build run  clean
+.PHONY: build run clean
 
 BUILD_DIR = build
 BIN = cat

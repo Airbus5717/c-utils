@@ -1,3 +1,4 @@
+#include "include/lexer.h"
 #include "include/languages.h"
 #include "include/token.h"
 #include "include/utils.h"
@@ -146,23 +147,14 @@ size_t lexer_single(lexer_t *lexer)
         next();
         while (current() != '\'' && !is_eof())
         {
-            if (isspace(current()) && peek() != '\'')
-            {
-                return EXIT_FAILURE;
-            }
             if (current() == '\0')
             {
                 return EXIT_FAILURE;
             }
-
-            if (length() == 2 && past() == '\\' && current() != '\\')
+            if (current() == '\\' && peek() == '\'')
             {
+                next();
                 add_len();
-                break;
-            }
-            if (length() > 1 && past() != '\\' && (peek() == '\'' || peek() == '\\'))
-            {
-                return EXIT_FAILURE;
             }
             next();
             add_len();
@@ -223,10 +215,7 @@ size_t lexer_multichar(lexer_t *lexer)
 
 void lexer_destroy(lexer_t *lexer)
 {
-    for_each(lexer->output, tkn_t)
-    {
-        free(tkn_t->val);
-    }
+    for_each(lexer->output, tkn_t) free(tkn_t->val);
     // free_string_vec(lexer->keywords);
     // free_string_vec(lexer->types);
     free(lexer->input);
