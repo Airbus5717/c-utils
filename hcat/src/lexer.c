@@ -175,7 +175,6 @@ size_t lexer_single(lexer_t *lexer)
     else if (isalpha(c))
     {
         return lexer_multichar(lexer);
-        return EXIT_SUCCESS;
     }
     else
     {

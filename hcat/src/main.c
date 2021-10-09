@@ -5,7 +5,6 @@
 #include "include/main.h"
 #include "include/export.h"
 #include "include/lexer.h"
-#include <stddef.h>
 
 int main(int argc, char **argv)
 {
