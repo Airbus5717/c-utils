@@ -9,12 +9,12 @@
 //
 void print(const char *str)
 {
-    printf("%s", (str ? str: "null"));
+    printf("%s", (str ? str : "null"));
 }
 
 void println(const char *str)
 {
-    puts((str ? str: "null"));
+    puts((str ? str : "null"));
 }
 
 //

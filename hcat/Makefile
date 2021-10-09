@@ -7,7 +7,7 @@ SRC = cat.c
 run: build
 	@$(BUILD_DIR)/$(BIN) test/main.c
 
-build: 
+build:
 	@cmake --build build
 
 generate:
