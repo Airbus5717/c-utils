@@ -11,7 +11,8 @@ typedef enum
     TYPE,
     CHAR,
     STRING,
-    SPACE, // newline and tab etc. also included
+    SPACE, // tab etc. also included
+    NEWLINE,
     COMMENT,
     OTHER,
 } token_type_t;

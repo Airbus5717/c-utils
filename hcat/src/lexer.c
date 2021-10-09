@@ -2,6 +2,7 @@
 #include "include/token.h"
 #include "include/utils.h"
 #include "include/vector.h"
+#include <ctype.h>
 
 void lexer_init(lexer_t *lexer, char *str, size_t len)
 {
@@ -71,9 +72,9 @@ size_t lexer_single(lexer_t *lexer)
     const char c = current();
     length() = 1;
     size_t save_index = lexer->index;
-    if (isspace(c))
+    if (c == '\n')
     {
-        lexer_tkn(lexer, SPACE);
+        lexer_tkn(lexer, NEWLINE);
         return EXIT_SUCCESS;
     }
     else if (c == '/' && peek() == '/')
@@ -175,6 +176,11 @@ size_t lexer_single(lexer_t *lexer)
     else if (isalpha(c))
     {
         return lexer_multichar(lexer);
+    }
+    else if (isspace(c))
+    {
+        lexer_tkn(lexer, SPACE);
+        return EXIT_SUCCESS;
     }
     else
     {
