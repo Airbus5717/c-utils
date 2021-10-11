@@ -10,7 +10,7 @@ int main(int argc, char **argv)
     // if program arguments less than 2
     if (argc < 2)
     {
-        printf("cat [filename]\n");
+        printf("%s [filename]\n", argv[0]);
         return 0;
     }
 
