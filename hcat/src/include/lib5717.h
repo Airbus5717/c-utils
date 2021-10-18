@@ -5,6 +5,7 @@
 #include <limits.h>
 #include <stdarg.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -39,4 +40,5 @@ char *remove_last_chars(const char *str, const size_t char_count);
 // returning a new string
 char *shorten_str(char *str, const size_t char_count);
 
+size_t get_num_of_digits(size_t n);
 #endif /* end of LIB5717  */

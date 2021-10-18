@@ -3,12 +3,14 @@
 #include "include/token.h"
 #include "include/utils.h"
 #include "include/vector.h"
+#include <stdlib.h>
 
 void lexer_init(lexer_t *lexer, char *str, size_t len)
 {
     lexer->index = 0;
     lexer->file_len = len;
     lexer->input = str;
+    lexer->lines = 1;
     lexer->output = new_vec(token_t);
     // lexer->keywords = new_vec(string_t);
     // lexer->types = new_vec(string_t);
@@ -74,6 +76,7 @@ size_t lexer_single(lexer_t *lexer)
     size_t save_index = lexer->index;
     if (c == '\n')
     {
+        lexer->lines++;
         lexer_tkn(lexer, NEWLINE);
         return EXIT_SUCCESS;
     }

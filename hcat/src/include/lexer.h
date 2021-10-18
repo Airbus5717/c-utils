@@ -16,6 +16,7 @@ typedef struct
     vec(string_t) types;
     size_t file_len;
     size_t index;
+    size_t lines;
     size_t length;
 } lexer_t;
 
