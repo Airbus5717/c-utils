@@ -18,7 +18,7 @@ void print_newline(size_t i, size_t max)
     printf("%zu", i);
     for (size_t j = 0; j < max - get_num_of_digits(i) + 1; j++)
         putc(' ', stdout);
-    printf("┃ ");
+    printf("| ");
 }
 
 void dump_colored_output(lexer_t *lexer)
@@ -28,7 +28,7 @@ void dump_colored_output(lexer_t *lexer)
     for (size_t i = 0; i < space_len; i++)
         spaces[i] = ' ';
     spaces[space_len] = 0;
-    printf("1%s┃ ", spaces);
+    printf("1%s| ", spaces);
     size_t len = vec_len(lexer->output);
     for_each(lexer->output, tkn_t)
     {
